@@ -66,6 +66,7 @@ var checks = []check{
 	{string(quality), "comp_with_multi_vuln_lookup_id", false, "components with multiple vulnerability lookup id", compWithMultipleIDCheck},
 	{string(quality), "sbom_with_creator_and_version", false, "sbom has creator and version", docWithCreatorCheck},
 	{string(quality), "sbom_with_primary_component", false, "sbom has primary component", docWithPrimaryComponentCheck},
+	{string(quality), "sbom_with_purls_or_cpes", false, "components wtih either purl or cpe", compWithPurlsOrCPEsCheck},
 
 	// sharing
 	{string(sharing), "sbom_sharable", false, "sbom document has a sharable license", sharableLicenseCheck},

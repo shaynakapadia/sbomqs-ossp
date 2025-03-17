@@ -56,7 +56,8 @@ func compWithNameCheck(d sbom.Document, c *check) score {
 		return *s
 	}
 	withNames := lo.CountBy(d.Components(), func(c sbom.GetComponent) bool {
-		return c.GetName() != ""
+		var substr string = "unknown"
+		return (c.GetName() != "" && !strings.Contains(strings.ToLower(c.GetName()), substr))
 	})
 	if totalComponents > 0 {
 		s.setScore((float64(withNames) / float64(totalComponents)) * 10.0)

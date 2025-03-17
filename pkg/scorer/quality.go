@@ -240,3 +240,38 @@ func docWithPrimaryComponentCheck(d sbom.Document, c *check) score {
 	s.setDesc("no primary component found")
 	return *s
 }
+
+func compWithPurlsOrCPEsCheck(d sbom.Document, c *check) score {
+	s := newScoreFromCheck(c)
+
+	totalComponents := len(d.Components())
+	if totalComponents == 0 {
+		s.setScore(0.0)
+		s.setDesc("N/A (no components)")
+		s.setIgnore(true)
+		return *s
+	}
+	withPURLsOrCPEs := lo.CountBy(d.Components(), func(c sbom.GetComponent) bool {
+		purls := c.GetPurls()
+		cpes := c.GetCpes()
+		var valid bool = false
+		for i := range purls {
+			if purls[i].Valid() {
+				valid = true
+			}
+		}
+		for i := range cpes {
+			if cpes[i].Valid() {
+				valid = true
+			}
+		}
+
+		return valid
+	})
+	if totalComponents > 0 {
+		s.setScore((float64(withPURLsOrCPEs) / float64(totalComponents)) * 10.0)
+	}
+	s.setDesc(fmt.Sprintf("%d/%d have PURLs or CPEs", withPURLsOrCPEs, totalComponents))
+
+	return *s
+}
