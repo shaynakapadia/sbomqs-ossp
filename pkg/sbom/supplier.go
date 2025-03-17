@@ -16,6 +16,10 @@ package sbom
 
 //counterfeiter:generate . Supplier
 
+import (
+	"strings"
+)
+
 type GetSupplier interface {
 	GetName() string
 	GetEmail() string
@@ -48,5 +52,6 @@ func (s Supplier) GetContacts() []Contact {
 }
 
 func (s Supplier) IsPresent() bool {
-	return s.Name != "" || s.Email != "" || s.URL != "" || len(s.Contacts) > 0
+	var substr string = "unknown"
+	return (s.Name != "" && !strings.Contains(strings.ToLower(s.Name), substr)) || s.Email != "" || s.URL != "" || len(s.Contacts) > 0
 }
