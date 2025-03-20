@@ -78,7 +78,9 @@ func compWithVersionCheck(d sbom.Document, c *check) score {
 		return *s
 	}
 	withVersions := lo.CountBy(d.Components(), func(c sbom.GetComponent) bool {
-		return c.GetVersion() != ""
+		var substr string = "unknown"
+		var version string = c.GetVersion()
+		return (version != "" && !strings.Contains(strings.ToLower(version), substr))
 	})
 	if totalComponents > 0 {
 		s.setScore((float64(withVersions) / float64(totalComponents)) * 10.0)
