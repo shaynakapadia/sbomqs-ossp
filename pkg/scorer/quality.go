@@ -275,3 +275,23 @@ func compWithPurlsOrCPEsCheck(d sbom.Document, c *check) score {
 
 	return *s
 }
+
+func dependenciesPresentCheck(d sbom.Document, c *check) score {
+	s := newScoreFromCheck(c)
+	relationsSet := make(map[string]struct{})
+	for _, node := range d.Relations() {
+		from := node.GetFrom()
+		to := node.GetTo()
+		relationsSet[from] = struct{}{}
+		relationsSet[to] = struct{}{}
+	}
+	withDependencies := lo.CountBy(d.Components(), func(c sbom.GetComponent) bool {
+		id := c.GetID()
+		_, exists := relationsSet[id]
+		return exists
+	})
+
+	s.setScore((float64(withDependencies)) / float64(len(d.Components())) * 10.0)
+	s.setDesc(fmt.Sprintf("%d components have dependency information out of %d total components", withDependencies, len(d.Components())))
+	return *s
+}

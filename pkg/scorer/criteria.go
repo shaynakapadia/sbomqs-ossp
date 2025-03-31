@@ -67,6 +67,7 @@ var checks = []check{
 	{string(quality), "sbom_with_creator_and_version", false, "sbom has creator and version", docWithCreatorCheck},
 	{string(quality), "sbom_with_primary_component", false, "sbom has primary component", docWithPrimaryComponentCheck},
 	{string(quality), "sbom_with_purls_or_cpes", false, "components wtih either purl or cpe", compWithPurlsOrCPEsCheck},
+	{string(quality), "comp_with_dependencies", false, "components with dependencies", dependenciesPresentCheck},
 
 	// sharing
 	{string(sharing), "sbom_sharable", false, "sbom document has a sharable license", sharableLicenseCheck},
