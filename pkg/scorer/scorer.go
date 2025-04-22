@@ -70,7 +70,6 @@ func (s *Scorer) Score() Scores {
 	}
 
 	if len(s.featFilter) > 0 {
-		fmt.Println("featureScores()")
 		return s.featureScores()
 	}
 
